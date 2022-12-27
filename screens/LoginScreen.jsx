@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   View,
   Text,
@@ -10,7 +10,6 @@ import {
   TouchableOpacity,
   Keyboard,
   TouchableWithoutFeedback,
-  Dimensions,
 } from "react-native";
 
 export const LoginScreen = () => {
@@ -21,9 +20,6 @@ export const LoginScreen = () => {
   const [password, setPassword] = useState("");
 
   const [isntShowPassword, setIsntShowPassword] = useState(true);
-  const [dimensions, setDimensions] = useState(
-    Dimensions.get("window").width - 16 * 2
-  );
 
   const enterData = { ...email, ...password };
 
@@ -41,17 +37,6 @@ export const LoginScreen = () => {
     isntShowPassword ? setIsntShowPassword(false) : setIsntShowPassword(true);
   };
 
-  useEffect(() => {
-    const onChange = () => {
-      const width = Dimensions.get("window").width - 16 * 2;
-      setDimensions(width);
-    };
-    Dimensions.addEventListener("change", onChange);
-    return () => {
-      Dimensions.removeEventListener("change", onChange);
-    };
-  }, []);
-
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={hideKeyboard}>
@@ -63,7 +48,7 @@ export const LoginScreen = () => {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
           >
             <View style={styles.formContainer}>
-              <View style={{ width: dimensions }}>
+              <View>
                 <Text style={styles.formTitle}>Войти</Text>
                 <TextInput
                   style={{
@@ -133,8 +118,6 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   formContainer: {
-    justifyContent: "center",
-    alignItems: "center",
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
     backgroundColor: "white",
@@ -151,6 +134,7 @@ const styles = StyleSheet.create({
   input: {
     height: 50,
     marginBottom: 16,
+    marginHorizontal: 16,
     padding: 16,
     color: "#212121",
     backgroundColor: "#F6F6F6",

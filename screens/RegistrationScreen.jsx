@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   View,
   Text,
@@ -11,7 +11,6 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   Image,
-  Dimensions,
 } from "react-native";
 
 export const RegistrationScreen = () => {
@@ -24,9 +23,6 @@ export const RegistrationScreen = () => {
   const [password, setPassword] = useState("");
 
   const [isntShowPassword, setIsntShowPassword] = useState(true);
-  const [dimensions, setDimensions] = useState(
-    Dimensions.get("window").width - 16 * 2
-  );
 
   const registrationData = { ...login, ...email, ...password };
 
@@ -45,17 +41,6 @@ export const RegistrationScreen = () => {
     isntShowPassword ? setIsntShowPassword(false) : setIsntShowPassword(true);
   };
 
-  useEffect(() => {
-    const onChange = () => {
-      const width = Dimensions.get("window").width - 16 * 2;
-      setDimensions(width);
-    };
-    Dimensions.addEventListener("change", onChange);
-    return () => {
-      Dimensions.removeEventListener("change", onChange);
-    };
-  }, []);
-
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={hideKeyboard}>
@@ -67,7 +52,7 @@ export const RegistrationScreen = () => {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
           >
             <View style={styles.formContainer}>
-              <View style={{ width: dimensions }}>
+              <View>
                 <View style={styles.fotoPlace}>
                   <TouchableOpacity style={styles.addPictureButton}>
                     <Image source={require("../assets/images/add.png")}></Image>
@@ -102,7 +87,6 @@ export const RegistrationScreen = () => {
                   style={{
                     ...styles.input,
                     borderColor: isPasswordFocus ? "#FF6C00" : "#E8E8E8",
-                    // marginBottom: checkInputFocus() ? 16 : 80,
                   }}
                   placeholder={"Пароль"}
                   placeholderTextColor={"#BDBDBD"}
@@ -155,8 +139,6 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   formContainer: {
-    justifyContent: "center",
-    alignItems: "center",
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
     backgroundColor: "white",
@@ -190,6 +172,7 @@ const styles = StyleSheet.create({
   input: {
     height: 50,
     marginBottom: 16,
+    marginHorizontal: 16,
     padding: 16,
     color: "#212121",
     backgroundColor: "#F6F6F6",
