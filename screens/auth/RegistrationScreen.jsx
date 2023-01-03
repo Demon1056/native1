@@ -11,27 +11,31 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
-export const LoginScreen = () => {
+const RegistrationScreen = ({ navigation }) => {
+  const [isLoginFocus, setIsLoginFocus] = useState(false);
   const [isEmailFocus, setIsEmailFocus] = useState(false);
   const [isPasswordFocus, setIsPassowrdFocus] = useState(false);
 
+  const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [isntShowPassword, setIsntShowPassword] = useState(true);
 
-  const enterData = { ...email, ...password };
+  const registrationData = { ...login, ...email, ...password };
 
   const resetForm = () => {
-    setEmail(""), setPassword("");
+    setEmail(""), setPassword(""), setLogin("");
   };
   const hideKeyboard = () => Keyboard.dismiss();
 
   const handleSubmit = () => {
-    console.log(enterData), resetForm();
+    console.log(registrationData), resetForm();
   };
-  const checkInputFocus = () => !isEmailFocus && !isPasswordFocus;
+  const checkInputFocus = () =>
+    !isEmailFocus && !isLoginFocus && !isPasswordFocus;
 
   const toggleShowPassword = () => {
     isntShowPassword ? setIsntShowPassword(false) : setIsntShowPassword(true);
@@ -41,7 +45,7 @@ export const LoginScreen = () => {
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={hideKeyboard}>
         <ImageBackground
-          source={require("../assets/images/photobg.jpg")}
+          source={require("../../assets/images/photobg.jpg")}
           style={styles.bgImage}
         >
           <KeyboardAvoidingView
@@ -49,7 +53,28 @@ export const LoginScreen = () => {
           >
             <View style={styles.formContainer}>
               <View>
-                <Text style={styles.formTitle}>Войти</Text>
+                <View style={styles.fotoPlace}>
+                  <TouchableOpacity style={styles.addPictureButton}>
+                    <Ionicons
+                      name="add-circle-outline"
+                      size={25}
+                      color="#FF6C00"
+                    />
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.formTitle}>Регистрация</Text>
+                <TextInput
+                  style={{
+                    ...styles.input,
+                    borderColor: isLoginFocus ? "#FF6C00" : "#E8E8E8",
+                  }}
+                  placeholder={"Логин"}
+                  placeholderTextColor={"#BDBDBD"}
+                  onFocus={() => setIsLoginFocus(true)}
+                  onBlur={() => setIsLoginFocus(false)}
+                  onChangeText={(value) => setLogin({ login: value })}
+                  value={login}
+                />
                 <TextInput
                   style={{
                     ...styles.input,
@@ -89,11 +114,15 @@ export const LoginScreen = () => {
                       style={styles.submitButton}
                       onPress={handleSubmit}
                     >
-                      <Text style={styles.btnText}>Войти</Text>
+                      <Text style={styles.btnText}>Зарегистрироваться</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate("Login");
+                      }}
+                    >
                       <Text style={styles.bottomText}>
-                        Нет аккаунта? Зарегистрироваться
+                        Уже есть аккаунт? Войти
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -107,6 +136,7 @@ export const LoginScreen = () => {
   );
 };
 
+export default RegistrationScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -120,11 +150,26 @@ const styles = StyleSheet.create({
   formContainer: {
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
-    backgroundColor: "white",
+    backgroundColor: "fffff",
+  },
+  fotoPlace: {
+    width: 120,
+    height: 120,
+    position: "relative",
+    marginBottom: 32,
+    marginTop: -66,
+    marginLeft: "auto",
+    marginRight: "auto",
+    borderRadius: 16,
+    backgroundColor: "#F6F6F6",
+  },
+  addPictureButton: {
+    position: "absolute",
+    bottom: 6,
+    right: -12,
   },
   formTitle: {
     marginBottom: 32,
-    marginTop: 32,
     textAlign: "center",
     color: "#212121",
     fontFamily: "Roboto-Regular",
@@ -150,11 +195,16 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     fontFamily: "Roboto-Regular",
   },
-  showOrHidePasswordButton: { position: "absolute", top: 182, right: 32 },
+  showOrHidePasswordButton: {
+    position: "absolute",
+    top: 300,
+    right: 32,
+  },
   submitButton: {
     height: 51,
     marginBottom: 16,
     marginTop: 27,
+    marginHorizontal: 16,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 100,
@@ -168,7 +218,7 @@ const styles = StyleSheet.create({
     lineHeight: 19,
   },
   bottomText: {
-    marginBottom: 111,
+    marginBottom: 45,
     textAlign: "center",
     color: `#1B4371`,
     fontFamily: "Roboto-Regular",
