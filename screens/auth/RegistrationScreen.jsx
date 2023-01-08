@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-const RegistrationScreen = ({ navigation }) => {
+const RegistrationScreen = ({ navigation, authorization }) => {
   const [isLoginFocus, setIsLoginFocus] = useState(false);
   const [isEmailFocus, setIsEmailFocus] = useState(false);
   const [isPasswordFocus, setIsPassowrdFocus] = useState(false);
@@ -32,7 +32,12 @@ const RegistrationScreen = ({ navigation }) => {
   const hideKeyboard = () => Keyboard.dismiss();
 
   const handleSubmit = () => {
-    console.log(registrationData), resetForm();
+    if (registrationData) {
+      {
+        authorization(true);
+      }
+    }
+    resetForm();
   };
   const checkInputFocus = () =>
     !isEmailFocus && !isLoginFocus && !isPasswordFocus;
@@ -150,7 +155,7 @@ const styles = StyleSheet.create({
   formContainer: {
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
-    backgroundColor: "fffff",
+    backgroundColor: "FFFFFF",
   },
   fotoPlace: {
     width: 120,
@@ -172,7 +177,7 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     textAlign: "center",
     color: "#212121",
-    fontFamily: "Roboto-Regular",
+    fontFamily: "Roboto-Bold",
     fontSize: 30,
     lineHeight: 35,
   },
@@ -186,6 +191,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     fontFamily: "Roboto-Regular",
+
     fontSize: 16,
     lineHeight: 19,
   },
@@ -209,7 +215,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 100,
     backgroundColor: "#FF6C00",
-    fontFamily: "Roboto-Regular",
   },
   btnText: {
     color: "#FFFFFF",

@@ -12,7 +12,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = ({ navigation, authorization }) => {
   const [isEmailFocus, setIsEmailFocus] = useState(false);
   const [isPasswordFocus, setIsPassowrdFocus] = useState(false);
 
@@ -29,7 +29,12 @@ const LoginScreen = ({ navigation }) => {
   const hideKeyboard = () => Keyboard.dismiss();
 
   const handleSubmit = () => {
-    console.log(enterData), resetForm();
+    if (enterData) {
+      {
+        authorization(true);
+      }
+    }
+    resetForm();
   };
   const checkInputFocus = () => !isEmailFocus && !isPasswordFocus;
 
@@ -124,14 +129,14 @@ const styles = StyleSheet.create({
   formContainer: {
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
-    backgroundColor: "white",
+    backgroundColor: "FFFFFF",
   },
   formTitle: {
     marginBottom: 32,
     marginTop: 32,
     textAlign: "center",
     color: "#212121",
-    fontFamily: "Roboto-Regular",
+    fontFamily: "Roboto-Bold",
     fontSize: 30,
     lineHeight: 35,
   },
@@ -164,7 +169,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 100,
     backgroundColor: "#FF6C00",
-    fontFamily: "Roboto-Regular",
   },
   btnText: {
     color: "#FFFFFF",
